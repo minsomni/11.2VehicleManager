@@ -3,6 +3,11 @@
 #########################################
 ### Homework 11.2: Vehicle Management ###
 #########################################
+# Das Programm erstellt eine editierbare Liste
+# von Vehicle-Objekten. Die Liste wird beim Beenden
+# in eine Textdatei geschrieben, die beim nächsten
+# Start wieder eingelesen wird.
+#########################################
 
 ### global variables
 allVehicles = [] # holds all Vehicle-Objects
@@ -24,7 +29,7 @@ class Vehicle(object):
         a = self.brand + " " + self.model + " (" + self.km + " km), Next Service: " + self.service
         return a
 
-def import_data():
+def import_data(): #liest Daten aus Textdatei, falls vorhanden
     try:
         with open("vehicles.txt", "r") as f:
             input = f.readlines()
@@ -45,7 +50,7 @@ def import_data():
     except IndexError:
         print("index error")
 
-def save_data():
+def save_data(): #schreibt alle Objekte von allVehicles-Liste in eine Datei
     with open("vehicles.txt","w") as file:
         for i,j in enumerate(allVehicles):
             brand = allVehicles[i].brand
@@ -101,7 +106,7 @@ def main():
 
     while True:
         print("\n" * 5)
-        print("### Vehicle Management ###")
+        print("### V E H I C L E   M A N A G E R ###")
         print("(1) Add a new car")
         print("(2) Show List")
         print("(3) Exit")

@@ -122,5 +122,3 @@ if __name__ == '__main__':
             save_data()
             print("Good Bye")
             exit()
-
-

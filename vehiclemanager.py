@@ -1,7 +1,7 @@
 # coding=utf-8
 
 #########################################
-### Homework 11.2: Vehicle Management ###
+#### Homework 11.2: Vehicle Manager ####
 #########################################
 # Das Programm erstellt eine editierbare Liste
 # von Vehicle-Objekten. Die Liste wird beim Beenden
@@ -9,7 +9,7 @@
 # Start wieder eingelesen wird.
 #########################################
 
-### global variables
+# globale variable
 allVehicles = [] # holds all Vehicle-Objects
 
 class Vehicle(object):
@@ -60,9 +60,39 @@ def save_data(): #schreibt alle Objekte von allVehicles-Liste in eine Datei
 
             file.write(brand + "::" + model + "::" + km + "::" + service + "//")
 
-def addCar():
+def showList(): #zeigt Objekte der allVehicles-Liste. Einträge können editiert werden (km, service date, löschen)
     print("\n" * 5)
-    print("### Add a car ###")
+    while True:
+        print("\n" * 2)
+        print("### LIST OF VEHICLES ###")
+        for index, i in enumerate(allVehicles):
+            print("(" + str(index) + ") " + i.list_data())
+
+        listSelection = raw_input("\nWhich Vehicle would you like to edit? (press enter to return to main menu)").lower()
+
+        if listSelection == "":
+            return None
+
+        try:
+            if int(listSelection) < len(allVehicles):
+                selected_car = allVehicles[int(listSelection)]
+                print selected_car.list_data()
+                newKm = raw_input("Enter new km (press enter to skip): ")
+                newService = raw_input("Enter next Service date (press enter to skip): ")
+                deleteCar = raw_input("Do you want to (d)elete this entry? (press enter to skip): ").lower()
+                if newKm:
+                    selected_car.edit_km(newKm)
+                if newService:
+                    selected_car.edit_service(newService)
+                if deleteCar == "d":
+                    allVehicles.remove(selected_car)
+
+        except ValueError:
+            print("Error")
+
+def addCar(): #erzeugt neues Vehicles-Objekt und fügt es der allVehicles-Liste hinzu
+    print("\n" * 5)
+    print("### ADD NEW CAR ###")
     brand = raw_input("Brand: ")
     model = raw_input("Model: ")
     km = raw_input("Km: ")
@@ -70,58 +100,27 @@ def addCar():
     newCar = Vehicle(brand,model,km,service)
     allVehicles.append(newCar)
 
-def showList():
-    print("\n" * 5)
-    while True:
-        print("\n" * 2)
-        print("### List of Vehicles ###")
-        for index, i in enumerate(allVehicles):
-            print("(" + str(index) + ") " + i.list_data())
-        print("(B)ack to main menu")
-
-        listSelection = raw_input("Which Vehicle would you like to edit? ").lower()
-
-        if listSelection == "b":
-            return None
-
-        try:
-            if int(listSelection) < len(allVehicles):
-                selected_car = allVehicles[int(listSelection)]
-                print selected_car.list_data()
-                newKm = raw_input("Enter new km (or leave empty to skip): ")
-                newService = raw_input("Enter next Service date (or leave empty to skip): ")
-                deleteCar = raw_input("Do you want to delete this entry (y)es, leave empty to skip): ").lower()
-                if newKm:
-                    selected_car.edit_km(newKm)
-                if newService:
-                    selected_car.edit_service(newService)
-                if deleteCar == "y":
-                    allVehicles.remove(selected_car)
-
-        except ValueError:
-            print("Error")
-
-def main():
+if __name__ == '__main__':
     import_data()
 
     while True:
         print("\n" * 5)
+        print("#####################################")
         print("### V E H I C L E   M A N A G E R ###")
-        print("(1) Add a new car")
-        print("(2) Show List")
-        print("(3) Exit")
+        print("#####################################")
+        print("(1) Show List")
+        print("(2) Add a new car")
+        print("\n(E)xit Vehicle Manager\n")
 
         menuSelection = str(raw_input("Please select: ")).lower()
 
         if menuSelection == "1":
-            addCar()
-        elif menuSelection == "2":
             showList()
-        elif menuSelection == "3":
+        elif menuSelection == "2":
+            addCar()
+        elif menuSelection == "e":
             save_data()
             print("Good Bye")
             exit()
-
-if __name__ == '__main__': main()
 
 
